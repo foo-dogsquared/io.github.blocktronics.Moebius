@@ -1,0 +1,60 @@
+= io.github.blocktronics.Moebius
+:toc:
+
+A Flatpak manifest for building Moebius complete with desktop files and all.
+Just being a responsible Flatpak packager by packaging this without the developer's permission. :)
+
+
+
+
+== Installation
+
+CAUTION: Only install if you're feeling adventurous and have tolerance for low standards for packaging. :)
+
+Have `flatpak-builder` installed and just do the following:
+
+[source, shell]
+----
+flatpak-builder --assumeyes --user --install build/ io.github.blocktronics.Moebius
+----
+
+
+
+
+== Setting up for development
+
+If you want to contribute, you can simply clone this repository.
+
+[source, shell]
+----
+git clone --recurse-submodules ${GIT_REPO_OF_THIS_PROJECT}
+----
+
+The project structure should look like the following:
+
+[source]
+----
+io.github.blocktronics.Moebius
+├── deps/
+├── flatpak-builder-tools/
+├── patches/
+├── resources/
+├── io.github.blocktronics.Moebius.yml
+└── README.adoc
+----
+
+* `deps` is the dependencies specifically needed for this application.
+This is the Node packages generated from `flatpak-builder-tools`.
+To update this, run `flatpak-builder-tools/node/flatpak-builder-generator.py npm ${lockfile}`.
+
+* `resources` is the extra files that the upstream did not provide.
+As of 2021-11-04, this only contains the link:https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html[Desktop Entry file].
+
+* `patches`... contains the patches for the source code.
+Though take note the source code will be in `main` when building from manifest.
+
+If you want to get started, look into the following resources:
+
+* link:https://docs.flatpak.org/en/latest/getting-started.html[Getting started for Flatpak]
+* link:https://docs.flatpak.org/en/latest/electron.html[Flatpak has a dedicated page for packaging Electron-based applications]
+* link:https://docs.flatpak.org/en/latest/flatpak-builder-command-reference.html[A reference page for all Flatpak builder-related things] including the keys and values for the manifest
