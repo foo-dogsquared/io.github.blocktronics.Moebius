@@ -1,0 +1,22 @@
+diff --git a/electron-builder.yml b/electron-builder.yml
+index 1421bb6..24fed4b 100644
+--- a/main/electron-builder.yml
++++ b/main/electron-builder.yml
+@@ -51,10 +51,10 @@ win:
+ portable:
+   artifactName: Moebius.exe
+ linux:
+-  artifactName: Moebius.${ext}
+-  target: 
+-  - target: rpm
+-  - target: deb
+-  description: Moebius is a new ANSI and ASCII Editor for Linux, MacOS, and Windows. The major feature that differentiates it from PabloDraw is the 'half-block' brush which allows editing in a style closer to Photoshop than a text editor, although you can still use the function and cursor keys to draw with, and you should find that most of the text editing features from PabloDraw are carried over to this editor.
+-  category: Graphics
+-electronVersion: 8.5.2
++  target:
++  - target: dir
++  desktop:
++    Name: ${productName}
++    GenericName: ANSI and ASCII editor
++    Comment: Create ASCII art with a Photoshop-style interface
++    Terminal: false

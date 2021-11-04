@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Moebius
+GenericName=ANSI and ASCII editor
+Comment=Create ASCII art with a Photoshop-style interface
+Terminal=false
+Exec=run.sh
+Type=Application
+Icon=moebius
+Name[en_US]=Moebius
+

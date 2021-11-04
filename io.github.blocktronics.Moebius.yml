@@ -1,0 +1,57 @@
+id: io.github.blocktronics.Moebius
+runtime: org.freedesktop.Platform
+runtime-version: "21.08"
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: "21.08"
+command: run.sh
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node14
+build-options:
+  append-path: /usr/lib/sdk/node14/bin
+  env:
+    NPM_CONFIG_LOGLEVEL: info
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --share=network
+  - --filesystem=home
+rename-desktop-file: moebius.desktop
+rename-icon: icon_256x256
+
+modules:
+  - name: moebius
+    buildsystem: simple
+    build-options:
+      env:
+        XDG_CACHE_HOME: /run/build/moebius/flatpak-node/cache
+        npm_config_cache: /run/build/moebius/flatpak-node/npm-cache
+        npm_config_nodedir: /usr/lib/sdk/node14
+        npm_config_offline: 'true'
+    build-commands:
+      - npm install --offline
+      - npm run build-linux
+      - cp -a dist/linux*unpacked /app/main
+      - install -Dm755 -t /app/bin ../run.sh
+      - install -Dm644 ./build/icons/icon_256x256.png -t ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/
+      - install -Dm644 ../moebius.desktop -t ${FLATPAK_DEST}/share/applications/
+    subdir: main
+    sources:
+      - type: git
+        url: https://github.com/blocktronics/moebius.git
+        branch: master
+        commit: 2baae76a4426100bf3cda3a385de35060023685f
+        dest: main
+      - type: patch
+        path: ./patches/change-electron-builder-config.patch
+      # This is generated with `flatpak-builder-tools` Node generator.
+      - ./deps/generated-sources.json
+      # Wrapper to launch the app.
+      - type: script
+        dest-filename: run.sh
+        commands:
+          - zypak-wrapper.sh /app/main/moebius "$@"
+      # Include the resources folder for the app metadata.
+      - type: dir
+        path: resources
